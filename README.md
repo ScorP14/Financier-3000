@@ -29,10 +29,10 @@
 ```source env/bin/activate```
 
 
-5. Запустить приложение
-
-```python run.py```
-
 5. Установка зависимостей
 
 ```pip install -r req.txt```
+
+6. Запустить приложение
+
+```python run.py```
