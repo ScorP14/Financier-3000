@@ -2,7 +2,6 @@ import json
 import os
 
 from db.base_interface import FileDataBase
-from shema import Expense
 
 
 class JsonFileDb(FileDataBase):
@@ -19,28 +18,34 @@ path_for_file: str = Путь до файла
 
     def create(self, expense: dict) -> None:
         """Добавляет новую запись"""
-        db = self.all()
+        db = self.__get_all()
         autoincrement = sorted(list(map(int, db.keys())))[-1] + 1 if len(db) != 0 else 0
         db[autoincrement] = expense
         self.write_file(db)
 
-    def all(self) -> dict:
+    def __get_all(self) -> dict:
         """Считывает весь файл"""
         with open(self.file, 'r', encoding='UTF-8') as file:
             read_file = file.read()
-            return [value | {'id': key} for key, value in json.loads(read_file).items()] if len(read_file) != 0 else {}
+            return json.loads(read_file) if len(read_file) != 0 else {}
+
+    def all(self) -> list:
+        """Получить список всех записей"""
+        with open(self.file, 'r', encoding='UTF-8') as file:
+            read_file = file.read()
+            return [value | {'id': key} for key, value in json.loads(read_file).items()] if len(read_file) != 0 else []
 
     def get(self, item_id: int) -> dict:
         """Получить запись по id"""
-        data = self.all().get(str(item_id))
+        data = self.__get_all().get(str(item_id))
         if data is None:
             raise KeyError(f'Объект c id={item_id} не найден')
         data['id'] = item_id
         return data
 
-    def update(self, item_id: int, expense: Expense) -> None:
+    def update(self, item_id: int, expense: dict) -> None:
         """Обновление записи"""
-        db = self.all()
+        db = self.__get_all()
         if db.get(str(item_id)) is None:
             raise KeyError(f'Объект c id={item_id} не найден')
         db[str(item_id)] = expense
@@ -48,7 +53,7 @@ path_for_file: str = Путь до файла
 
     def delete(self, item_id: int) -> None:
         """Удаление записи"""
-        db = self.all()
+        db = self.__get_all()
         if not db.get(str(item_id)):
             raise KeyError(f'Объект c id={item_id} не найден')
         del db[str(item_id)]
@@ -58,3 +63,4 @@ path_for_file: str = Путь до файла
         """Записать новые данные в файл"""
         with open(self.file, 'w', encoding='UTF-8') as file:
             json.dump(data, file, indent=4, ensure_ascii=False)
+

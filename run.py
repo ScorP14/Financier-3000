@@ -3,9 +3,10 @@ from cli_interface import banner, help_banner, greetings, create_view, update_vi
 from shema import CategoryExpenseEnum
 from utils import get_db, PrintExpense
 
-db = get_db('JSON')
-app = App(database=db)
 
+# Можно выбрать тип базы json/csv
+db = get_db('json')
+app = App(database=db)
 
 if __name__ == '__main__':
     banner()

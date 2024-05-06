@@ -40,8 +40,8 @@ class App:
         all_items = self.__db.all()
         total_price = 0
         for key in all_items:
-            if all_items[key]['category'] == category:
-                total_price += all_items[key]['price']
+            if key['category'] == category:
+                total_price += int(key['price'])
         return total_price
 
     def get_current_balance(self) -> int:

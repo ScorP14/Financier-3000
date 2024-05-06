@@ -42,7 +42,9 @@ def create_view(app):
 
 def update_view(app):
     while True:
-        item_id = input('Введите id записи которую хотите изменить: ')
+        item_id = input('Введите id записи которую хотите изменить(Что бы вернуться назад введите: -b): ')
+        if item_id.strip().lower() in ['-b']:
+            return
         try:
             instance = app.get_by_item_id(item_id)
         except KeyError:
