@@ -1,5 +1,5 @@
 from app import App
-from cli_interface import banner, help_banner, greetings, create_view, update_view
+from cli_interface import banner, help_banner, greetings, create_view, update_view, delete_view
 from shema import CategoryExpenseEnum
 from utils import get_db, PrintExpense
 
@@ -34,6 +34,8 @@ if __name__ == '__main__':
                 create_view(app)
             case '-u':
                 update_view(app)
+            case '-d':
+                delete_view(app)
             case '-sd', search_data:
                 print(f'Фильтр по дате')
                 PrintExpense.print_list_expense(app.search_by_date(search_data))

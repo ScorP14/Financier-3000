@@ -17,6 +17,7 @@ def help_banner():
         -ba, -bi, -be:  Показать текущий баланс/доход/расход
         -c:             Добавить запись
         -u              Обновить запись 
+        -d              Обновить запись        
         -sd <date>      Фильтр по дате
         -sp <int-int>   Фильтр по диапазону сумм 
         -q              Выход
@@ -62,3 +63,25 @@ def update_view(app):
         print('Запись успешно изменена')
         return
 
+def delete_view(app):
+    while True:
+        item_id = input('Введите id записи которую хотите удалить(Что бы вернуться назад введите: -b): ')
+        if item_id.strip().lower() in ['-b']:
+            return
+        try:
+            instance = app.get_by_item_id(item_id)
+        except KeyError:
+            print('Записи с таким id не найдено')
+            continue
+        print(
+            f'Удалить запись: ({instance.date}) {instance.category.title()} - {instance.price}, {instance.descriptions}\n'
+            f'Подтвердите удаление -y/-n (Что бы вернуться назад введите: -b):'
+        )
+        cmd = input()
+        match cmd:
+            case '-y':
+                app.delete_item(item_id)
+                print('Запись успешно удалена')
+        match cmd:
+            case '-y' | '-b':
+                return
