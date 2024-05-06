@@ -33,7 +33,7 @@ class App:
     def get_list_item_by_category(self, category: CategoryExpenseEnum) -> list[Expense]:
         """Получить все записи"""
         data = self.__db.all()
-        return [Expense(**value, id=key) for key, value in data.items() if value['category'] == category]
+        return [Expense(**value) for value in data if value['category'] == category]
 
     def get_total_sum_category(self, category: CategoryExpenseEnum) -> int:
         """Получить сумму доходов/расходов"""
