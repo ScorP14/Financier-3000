@@ -9,6 +9,7 @@ class JsonFileDb(FileDataBase):
     """Сущность для работы с JSON файлами:
 path_for_file: str = Путь до файла
     """
+
     def __init__(self, path_for_file: str) -> None:
         self.file = path_for_file
         # Проверка на существование файла, если нет создать
@@ -16,7 +17,7 @@ path_for_file: str = Путь до файла
             with open(self.file, 'x'):
                 pass
 
-    def create(self, expense: str) -> None:
+    def create(self, expense: dict) -> None:
         """Добавляет новую запись"""
         db = self.all()
         autoincrement = sorted(list(map(int, db.keys())))[-1] + 1 if len(db) != 0 else 0
@@ -27,7 +28,7 @@ path_for_file: str = Путь до файла
         """Считывает весь файл"""
         with open(self.file, 'r', encoding='UTF-8') as file:
             read_file = file.read()
-            return json.loads(read_file) if len(read_file) != 0 else {}
+            return [value | {'id': key} for key, value in json.loads(read_file).items()] if len(read_file) != 0 else {}
 
     def get(self, item_id: int) -> dict:
         """Получить запись по id"""

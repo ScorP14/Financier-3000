@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, fields
 from datetime import date, datetime
 from enum import Enum
 import json
@@ -34,5 +34,8 @@ class Expense:
     def get_json(self) -> str:
         return json.dumps(self.get_dict(), ensure_ascii=False, indent=2)
 
+    @classmethod
+    def get_name_fields_list(cls):
+        return [i.name for i in fields(cls)]
 
 

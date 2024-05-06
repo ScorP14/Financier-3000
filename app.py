@@ -11,7 +11,7 @@ class App:
     def get_all_list_item(self) -> list[Expense]:
         """Получить все записи"""
         data = self.__db.all()
-        return [Expense(**value, id=key) for key, value in data.items()]
+        return [Expense(**value) for value in data]
 
     def get_by_item_id(self, item_id: int) -> Expense:
         """Получить запись по id"""
